@@ -28,7 +28,7 @@ const CartProvider = (props) => {
       });
     }
 
-    // not working correctly! 
+    // not working correctly!
     // written by me! :D
 
     // if (indexOfItem !== -1) {
@@ -48,15 +48,21 @@ const CartProvider = (props) => {
 
   const removeItemFromCartHandler = (id) => {
     const reqIndex = cartItems.findIndex((ele) => ele.id === id);
+    const existingItem = cartItems[reqIndex];
 
-    if (cartItems[reqIndex].amount === 1) {
+    if (existingItem.amount === 1) {
+      // cartItems[reqIndex] = updatedItem;
       setCartItems((prevItems) => {
         return prevItems.filter((ele) => ele.id !== id);
       });
     } else {
+      const updatedItem = {
+        ...existingItem,
+        amount: existingItem.amount - 1,
+      };
       setCartItems((prevItems) => {
         const updatedItems = [...prevItems];
-        updatedItems[reqIndex].amount--;
+        updatedItems[reqIndex] = updatedItem;
         return updatedItems;
       });
     }
