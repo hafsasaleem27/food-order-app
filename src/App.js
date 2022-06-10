@@ -13,7 +13,7 @@ function App() {
   const closeCartHandler = () => setIsCartOpen(false);
 
   return (
-    <CartProvider value={CartContext}>
+    <CartProvider>
       {isCartOpen && <Cart onCloseCart={closeCartHandler} />}
       <Header onOpenCart={openCartHandler}></Header>
       <Meals />
