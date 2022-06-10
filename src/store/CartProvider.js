@@ -6,16 +6,20 @@ const CartProvider = (props) => {
   const [totalAmount, setTotalAmount] = useState(0);
 
   const addItemToCartHandler = (item) => {
-    console.log("item: ", item);
     const indexOfItem = cartItems.findIndex((ele) => ele.id === item.id);
+    const existingItem = cartItems[indexOfItem];
 
-    if (indexOfItem !== -1) {
+    // this solution works correctly!
+    // MAX Solution
+
+    if (existingItem) {
+      const updatedItem = {
+        ...existingItem,
+        amount: existingItem.amount + item.amount,
+      };
       setCartItems((prevItems) => {
-        console.log('prevItems: ', prevItems)
         const prevList = [...prevItems];
-        // prevList[indexOfItem].amount += item.amount;
-        // console.log('prevList[indexOfItem].amount: ', prevList[indexOfItem].amount);
-        // console.log('item.amount: ', item.amount)
+        prevList[indexOfItem] = updatedItem;
         return prevList;
       });
     } else {
@@ -23,6 +27,22 @@ const CartProvider = (props) => {
         return [...prevItems, item];
       });
     }
+
+    // not working correctly! 
+    // written by me! :D
+
+    // if (indexOfItem !== -1) {
+    //   setCartItems((prevItems) => {
+    //     const prevList = [...prevItems];
+    //     // prevList[indexOfItem].amount = prevList[indexOfItem].amount + item.amount;
+    //     return prevList;
+    //   });
+    // } else {
+    //   setCartItems((prevItems) => {
+    //     return [...prevItems, item];
+    //   });
+    // }
+
     setTotalAmount((prevAmount) => prevAmount + item.price * item.amount);
   };
 
