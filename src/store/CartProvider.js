@@ -34,7 +34,7 @@ const CartProvider = (props) => {
     // if (indexOfItem !== -1) {
     //   setCartItems((prevItems) => {
     //     const prevList = [...prevItems];
-    //     // prevList[indexOfItem].amount = prevList[indexOfItem].amount + item.amount;
+    //     prevList[indexOfItem].amount = prevList[indexOfItem].amount + item.amount;
     //     return prevList;
     //   });
     // } else {
