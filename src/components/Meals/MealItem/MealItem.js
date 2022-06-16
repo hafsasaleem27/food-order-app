@@ -2,10 +2,17 @@ import React, { useContext } from "react";
 import classes from "./MealItem.module.css";
 import MealItemForm from "./MealItemForm";
 import CartContext from "../../../store/cart-context";
+import createNotification from "../../../utils/CreateNotification";
 
 const MealItem = (props) => {
   const price = `$${props.price.toFixed(2)}`;
   const cartCtx = useContext(CartContext);
+
+  const notify = (amount) => {
+    const title = 'Item Added Successfully!';
+    const message = `Added ${amount} ${props.name} to the cart.`;
+    createNotification('success', title, message); 
+  };
 
   const addToCartHandler = (amount) => {
     cartCtx.addItem({
@@ -14,6 +21,7 @@ const MealItem = (props) => {
       amount: +amount,
       price: props.price,
     });
+    notify(amount);
   };
 
   return (
