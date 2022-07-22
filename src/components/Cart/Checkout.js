@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import classes from "./Checkout.module.css";
 
+const isEmpty = (value) => value.trim() === "";
+
 const Checkout = (props) => {
   const nameInputRef = useRef();
   const streetInputRef = useRef();
@@ -14,15 +16,29 @@ const Checkout = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log("value in name input field: ", nameInputRef.current.value);
-    if (nameInputRef.current.value.trim() === "") setIsNameValid(false);
+
+    const enteredName = nameInputRef.current.value;
+    const enteredStreet = streetInputRef.current.value;
+    const enteredPostalCode = postalInputRef.current.value;
+    const enteredCity = cityInputRef.current.value;
+
+    if (isEmpty(enteredName)) setIsNameValid(false);
     else setIsNameValid(true);
-    if (streetInputRef.current.value.trim() === "") setIsStreetValid(false);
+    if (isEmpty(enteredStreet)) setIsStreetValid(false);
     else setIsStreetValid(true);
-    if (postalInputRef.current.value.trim() === "") setIsPostalValid(false);
+    if (isEmpty(enteredPostalCode)) setIsPostalValid(false);
     else setIsPostalValid(true);
-    if (cityInputRef.current.value.trim() === "") setIsCityValid(false);
+    if (isEmpty(enteredCity)) setIsCityValid(false);
     else setIsCityValid(true);
+
+    const formIsValid =
+      isNameValid && isStreetValid && isPostalValid && isCityValid;
+    
+    if (!formIsValid) {
+        return;
+    }
+
+    // submit the cart
 
     nameInputRef.current.value = "";
     streetInputRef.current.value = "";
@@ -53,22 +69,16 @@ const Checkout = (props) => {
         <input id="name" type="text" ref={nameInputRef} />
       </div>
       <div className={streetInputClasses}>
-        <label htmlFor="street" >
-          Street
-        </label>
+        <label htmlFor="street">Street</label>
         <input id="street" type="text" ref={streetInputRef} />
       </div>
       <div className={postalInputClasses}>
-        <label htmlFor="postal" >
-          Postal Code
-        </label>
-        <input id="postal" type="text" ref={postalInputRef}/>
+        <label htmlFor="postal">Postal Code</label>
+        <input id="postal" type="text" ref={postalInputRef} />
       </div>
       <div className={cityInputClasses}>
-        <label htmlFor="city" >
-          City
-        </label>
-        <input id="city" type="text" ref={cityInputRef}/>
+        <label htmlFor="city">City</label>
+        <input id="city" type="text" ref={cityInputRef} />
       </div>
       <div className={classes.actions}>
         <button type="button" onClick={props.onCancel}>
