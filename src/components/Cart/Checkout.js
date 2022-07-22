@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./Checkout.module.css";
 
-const Checkout = () => {
+const Checkout = (props) => {
   return (
     <form>
       <div className={classes.control}>
@@ -20,6 +20,8 @@ const Checkout = () => {
         <label htmlFor="city">City</label>
         <input id="city" type="text" />
       </div>
+      <button type="button" onClick={props.onCancel}>Cancel</button>
+      <button>Confirm</button>
     </form>
   );
 };
