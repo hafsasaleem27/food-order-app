@@ -5,7 +5,7 @@ import CartContext from "../../../store/cart-context";
 import createNotification from "../../../utils/CreateNotification";
 
 const MealItem = (props) => {
-  const price = `$${props.price.toFixed(2)}`;
+  const price = `$${props.price}`;
   const cartCtx = useContext(CartContext);
 
   const notify = (amount) => {
