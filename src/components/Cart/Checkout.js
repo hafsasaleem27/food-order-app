@@ -39,6 +39,12 @@ const Checkout = (props) => {
     }
 
     // submit the cart
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      postalCode: enteredPostalCode,
+      city: enteredCity,
+    });
 
     nameInputRef.current.value = "";
     streetInputRef.current.value = "";
