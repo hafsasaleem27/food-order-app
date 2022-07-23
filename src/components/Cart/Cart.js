@@ -77,7 +77,7 @@ const Cart = (props) => {
     </div>
   );
 
-  let cartContent = (
+  const cartContent = (
     <React.Fragment>
       {cartItems}
       <div className={classes.total}>
@@ -93,13 +93,24 @@ const Cart = (props) => {
   );
 
   const submittingData = <p>Sending data...</p>;
-  const orderPlaced = <p>Order placed successfully!</p>
+  const orderPlaced = (
+    <React.Fragment>
+      <p>Order placed successfully!</p>
+      <div className={classes.actions}>
+        <button className={classes.button} onClick={props.onCloseCart}>
+          Close
+        </button>
+      </div>
+    </React.Fragment>
+  );
 
-  return <Modal onClose={props.onCloseCart}>
-    {isSubmitting && submittingData}
-    {hasSubmitted && orderPlaced}
-    {!isSubmitting && !hasSubmitted && cartContent}
-  </Modal>;
+  return (
+    <Modal onClose={props.onCloseCart}>
+      {isSubmitting && submittingData}
+      {hasSubmitted && orderPlaced}
+      {!isSubmitting && !hasSubmitted && cartContent}
+    </Modal>
+  );
 };
 
 export default Cart;
