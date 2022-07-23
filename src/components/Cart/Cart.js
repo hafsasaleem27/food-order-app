@@ -9,6 +9,7 @@ const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
   const [httpError, setHttpError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const cartCtx = useContext(CartContext);
   const totalPrice = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -42,7 +43,7 @@ const Cart = (props) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        "https://react-http-fe5e1-default-rtdb.firebaseio.com/",
+        "https://react-http-fe5e1-default-rtdb.firebaseio.com/orders.json",
         {
           method: "POST",
           body: JSON.stringify({
@@ -60,6 +61,7 @@ const Cart = (props) => {
     }
 
     setIsSubmitting(false);
+    setHasSubmitted(true);
   };
 
   const modalActions = (
@@ -75,10 +77,8 @@ const Cart = (props) => {
     </div>
   );
 
-  console.log('httpError: ', httpError)
-
-  return (
-    <Modal onClose={props.onCloseCart}>
+  let cartContent = (
+    <React.Fragment>
       {cartItems}
       <div className={classes.total}>
         <span>Total amount</span>
@@ -89,8 +89,17 @@ const Cart = (props) => {
         <Checkout onConfirm={orderSubmitHandler} onCancel={props.onCloseCart} />
       )}
       {!isCheckout && modalActions}
-    </Modal>
+    </React.Fragment>
   );
+
+  const submittingData = <p>Sending data...</p>;
+  const orderPlaced = <p>Order placed successfully!</p>
+
+  return <Modal onClose={props.onCloseCart}>
+    {isSubmitting && submittingData}
+    {hasSubmitted && orderPlaced}
+    {!isSubmitting && !hasSubmitted && cartContent}
+  </Modal>;
 };
 
 export default Cart;
