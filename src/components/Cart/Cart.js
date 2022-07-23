@@ -7,6 +7,8 @@ import Checkout from "./Checkout";
 
 const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [httpError, setHttpError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const cartCtx = useContext(CartContext);
   const totalPrice = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -36,14 +38,28 @@ const Cart = (props) => {
 
   const orderHandler = () => setIsCheckout(true);
 
-  const orderSubmitHandler = (userData) => {
-    fetch("https://react-http-fe5e1-default-rtdb.firebaseio.com/orders.json", {
-      method: "POST",
-      body: JSON.stringify({
-        user: userData,
-        orderedItems: cartCtx.items,
-      }),
-    });
+  const orderSubmitHandler = async (userData) => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(
+        "https://react-http-fe5e1-default-rtdb.firebaseio.com/",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            user: userData,
+            orderedItems: cartCtx.items,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+    } catch (error) {
+      setHttpError(error.message);
+    }
+
+    setIsSubmitting(false);
   };
 
   const modalActions = (
@@ -59,6 +75,8 @@ const Cart = (props) => {
     </div>
   );
 
+  console.log('httpError: ', httpError)
+
   return (
     <Modal onClose={props.onCloseCart}>
       {cartItems}
@@ -66,6 +84,7 @@ const Cart = (props) => {
         <span>Total amount</span>
         <span>{totalPrice}</span>
       </div>
+      {httpError && <p className={classes.error}>{httpError}</p>}
       {isCheckout && (
         <Checkout onConfirm={orderSubmitHandler} onCancel={props.onCloseCart} />
       )}
