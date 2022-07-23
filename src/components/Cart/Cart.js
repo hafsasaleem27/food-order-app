@@ -62,6 +62,7 @@ const Cart = (props) => {
 
     setIsSubmitting(false);
     setHasSubmitted(true);
+    cartCtx.clearCart();
   };
 
   const modalActions = (

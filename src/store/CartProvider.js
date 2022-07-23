@@ -69,11 +69,14 @@ const CartProvider = (props) => {
     setTotalAmount((prevAmount) => prevAmount - cartItems[reqIndex].price);
   };
 
+  const clearCartHandler = () => setCartItems([]);
+
   const cartContext = {
     items: cartItems,
     totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    clearCart: clearCartHandler,
   };
   return (
     <CartContext.Provider value={cartContext}>
